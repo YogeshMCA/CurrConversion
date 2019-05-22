@@ -1,6 +1,6 @@
 package com.example.microservice.CurrencyExchangeService.Controller;
 
-import java.math.BigDecimal;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -24,6 +24,14 @@ public class CurrencyController {
 		ExchangeValue exchange = repository.findByFromAndTo(from, to);
 		//System.out.println(environment.getProperty("local.server.port"));
 		exchange.setPort(Integer.parseInt(environment.getProperty("local.server.port")));
+		return exchange ;
+	}
+	
+	@GetMapping(path="/exchange-service-jpa/from/{from}/to/{to}")
+	public List<ExchangeValue> exchangeFrom(@PathVariable String from,@PathVariable String to){
+		List<ExchangeValue> exchange = repository.findFromAndToByFrom(from);
+		//System.out.println(environment.getProperty("local.server.port"));
+		//exchange.setPort(Integer.parseInt(environment.getProperty("local.server.port")));
 		return exchange ;
 	}
 
