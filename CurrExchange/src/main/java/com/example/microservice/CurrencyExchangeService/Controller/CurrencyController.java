@@ -2,6 +2,9 @@ package com.example.microservice.CurrencyExchangeService.Controller;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,12 +19,13 @@ public class CurrencyController {
 	@Autowired
 	private Environment environment;
 	
+	
 	@Autowired
 	private ExchangeValueRepository repository;
 	
 	@GetMapping(path="/exchange-service/from/{from}/to/{to}")
 	public ExchangeValue exchange(@PathVariable String from,@PathVariable String to){
-		ExchangeValue exchange = repository.findByFromAndTo(from, to);
+		ExchangeValue exchange = repository.findByFromCodeAndToCode(from, to);
 		//System.out.println(environment.getProperty("local.server.port"));
 		exchange.setPort(Integer.parseInt(environment.getProperty("local.server.port")));
 		return exchange ;
@@ -29,7 +33,7 @@ public class CurrencyController {
 	
 	@GetMapping(path="/exchange-service-jpa/from/{from}/to/{to}")
 	public List<ExchangeValue> exchangeFrom(@PathVariable String from,@PathVariable String to){
-		List<ExchangeValue> exchange = repository.findFromAndToByFrom(from);
+		List<ExchangeValue> exchange = repository.fetchExchangeValueData(from);
 		//System.out.println(environment.getProperty("local.server.port"));
 		//exchange.setPort(Integer.parseInt(environment.getProperty("local.server.port")));
 		return exchange ;

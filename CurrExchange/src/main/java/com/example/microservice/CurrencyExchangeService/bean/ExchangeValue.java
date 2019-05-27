@@ -1,41 +1,55 @@
 package com.example.microservice.CurrencyExchangeService.bean;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 @Entity
-public class ExchangeValue {
-@Column(name="currency_from")
-private String from;
-@Column(name="currency_to")
-private String to;
+public class ExchangeValue implements Serializable{
+@Column(name="from_code")
+private String fromCode;
+@Column(name="to_code")
+private String toCode;
 @Id
 private Long id;
 private BigDecimal conversionMultiple;
 private int port;
+
+@OneToMany(mappedBy="exchangeValue")
+Set<Countries> countries;
+
+public Set<Countries> getCountries() {
+	return countries;
+}
+public void setCountries(Set<Countries> countries) {
+	this.countries = countries;
+}
 public ExchangeValue(){
 	
 }
 public ExchangeValue(String from, String to, Long id, BigDecimal conversionMultiple) {
 	super();
-	this.from = from;
-	this.to = to;
+	this.fromCode = from;
+	this.toCode = to;
 	this.id = id;
 	this.conversionMultiple = conversionMultiple;
 }
-public String getFrom() {
-	return from;
+
+public String getFromCode() {
+	return fromCode;
 }
-public void setFrom(String from) {
-	this.from = from;
+public void setFromCode(String fromCode) {
+	this.fromCode = fromCode;
 }
-public String getTo() {
-	return to;
+public String getToCode() {
+	return toCode;
 }
-public void setTo(String to) {
-	this.to = to;
+public void setToCode(String toCode) {
+	this.toCode = toCode;
 }
 public Long getId() {
 	return id;
