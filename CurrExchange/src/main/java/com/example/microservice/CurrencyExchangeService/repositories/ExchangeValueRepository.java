@@ -8,7 +8,7 @@ import org.springframework.data.repository.Repository;
 import com.example.microservice.CurrencyExchangeService.bean.ExchangeValue;
 
 public interface ExchangeValueRepository extends Repository<ExchangeValue, Long>{
-	ExchangeValue findByFromCodeAndToCode(String from_code,String to_code);
-	@Query("select e.fromCode,e.toCode from ExchangeValue e where e.fromCode=?")
-	List<ExchangeValue> fetchExchangeValueData(String from);
+	ExchangeValue findByFromCodeAndToCode(String from,String to);
+	@Query("select e from ExchangeValue e where e.fromCode=? and e.toCode=?")
+	List<ExchangeValue> fetchExchangeValueData(String from,String to);
 }

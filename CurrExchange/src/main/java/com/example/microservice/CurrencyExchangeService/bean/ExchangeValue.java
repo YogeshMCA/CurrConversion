@@ -2,12 +2,13 @@ package com.example.microservice.CurrencyExchangeService.bean;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 @Entity
 public class ExchangeValue implements Serializable{
 @Column(name="from_code")
@@ -19,15 +20,13 @@ private Long id;
 private BigDecimal conversionMultiple;
 private int port;
 
-@OneToMany(mappedBy="exchangeValue")
-Set<Countries> countries;
+/*@OneToMany(mappedBy="exchangeValue")
+Set<Countries> countries;*/
 
-public Set<Countries> getCountries() {
-	return countries;
-}
-public void setCountries(Set<Countries> countries) {
-	this.countries = countries;
-}
+@ManyToOne(cascade=CascadeType.ALL)
+@JoinColumn()
+private Countries countries;
+
 public ExchangeValue(){
 	
 }

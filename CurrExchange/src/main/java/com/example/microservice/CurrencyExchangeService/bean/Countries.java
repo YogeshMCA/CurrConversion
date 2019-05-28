@@ -1,32 +1,33 @@
 package com.example.microservice.CurrencyExchangeService.bean;
 
-import javax.persistence.CascadeType;
+import java.io.Serializable;
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.ManyToOne;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.OneToMany;
 
 @Entity
-public class Countries {
+public class Countries implements Serializable{
 	
 	@Id
 	private Long Id;
 	private String countryCode;
 	private String countryName;
 	
-	@ManyToOne(cascade=CascadeType.ALL)
+	/*@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumns({@JoinColumn(name="fromCode",referencedColumnName="from_code"),
 					@JoinColumn(name="toCode",referencedColumnName="to_code")})
 	private ExchangeValue exchangeValue;
+	*/
 	
-	@JsonIgnore
-	public ExchangeValue getExchangeValue() {
+	@OneToMany(mappedBy="countries")
+	private Set<ExchangeValue> exchangeValue;
+			
+	public Set<ExchangeValue> getExchangeValue() {
 		return exchangeValue;
 	}
-	public void setExchangeValue(ExchangeValue exchangeValue) {
+	public void setExchangeValue(Set<ExchangeValue> exchangeValue) {
 		this.exchangeValue = exchangeValue;
 	}
 	public Long getId() {

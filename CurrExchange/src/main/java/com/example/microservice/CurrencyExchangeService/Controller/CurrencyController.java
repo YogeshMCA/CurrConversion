@@ -27,13 +27,13 @@ public class CurrencyController {
 	public ExchangeValue exchange(@PathVariable String from,@PathVariable String to){
 		ExchangeValue exchange = repository.findByFromCodeAndToCode(from, to);
 		//System.out.println(environment.getProperty("local.server.port"));
-		exchange.setPort(Integer.parseInt(environment.getProperty("local.server.port")));
-		return exchange ;
+		//exchange.setPort(Integer.parseInt(environment.getProperty("local.server.port")));
+		return exchange;
 	}
 	
 	@GetMapping(path="/exchange-service-jpa/from/{from}/to/{to}")
 	public List<ExchangeValue> exchangeFrom(@PathVariable String from,@PathVariable String to){
-		List<ExchangeValue> exchange = repository.fetchExchangeValueData(from);
+		List<ExchangeValue> exchange = repository.fetchExchangeValueData(from,to);
 		//System.out.println(environment.getProperty("local.server.port"));
 		//exchange.setPort(Integer.parseInt(environment.getProperty("local.server.port")));
 		return exchange ;
