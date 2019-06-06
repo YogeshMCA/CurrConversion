@@ -8,12 +8,15 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 public class ExchangeValue implements Serializable{
-@Column(name="from_code")
+
 private String fromCode;
-@Column(name="to_code")
+
 private String toCode;
 @Id
 private Long id;
@@ -24,7 +27,7 @@ private int port;
 Set<Countries> countries;*/
 
 @ManyToOne(cascade=CascadeType.ALL)
-@JoinColumn()
+@JoinColumn(name="countryCode",referencedColumnName="countryCode")
 private Countries countries;
 
 public ExchangeValue(){
@@ -32,24 +35,24 @@ public ExchangeValue(){
 }
 public ExchangeValue(String from, String to, Long id, BigDecimal conversionMultiple) {
 	super();
-	this.fromCode = from;
-	this.toCode = to;
+	//this.fromCode = from;
+	//this.toCode = to;
 	this.id = id;
 	this.conversionMultiple = conversionMultiple;
 }
 
-public String getFromCode() {
+/*public String getFromCode() {
 	return fromCode;
 }
 public void setFromCode(String fromCode) {
-	this.fromCode = fromCode;
+	this.fromCode = fr2omCode;
 }
 public String getToCode() {
 	return toCode;
 }
 public void setToCode(String toCode) {
 	this.toCode = toCode;
-}
+}*/
 public Long getId() {
 	return id;
 }
@@ -67,6 +70,13 @@ public int getPort() {
 }
 public void setPort(int port) {
 	this.port = port;
+}
+@JsonIgnore
+public Countries getCountries() {
+	return countries;
+}
+public void setCountries(Countries countries) {
+	this.countries = countries;
 }
 
 
