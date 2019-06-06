@@ -27,7 +27,7 @@ public class School implements Serializable{
 	private Long sId;*/
 	
 	@ManyToOne
-	@JoinColumn(name="sId",referencedColumnName="sId",insertable=true)
+	@JoinColumn(name="sId",insertable = false, updatable = false)
 	private Student student;
 	
 	public School(){

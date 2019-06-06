@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.TableGenerator;
 
@@ -19,7 +20,8 @@ public class Student implements Serializable{
 	private Long sId;
 	private String name;
 	
-	@OneToMany(mappedBy="student",cascade=CascadeType.ALL)
+	@OneToMany(cascade=CascadeType.ALL)
+	@JoinColumn(name="sId")
 	private List<School> school;
 	
 	public Student(){
