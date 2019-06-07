@@ -23,8 +23,6 @@ public class School implements Serializable{
 	private String name;
 	private String address;
 	
-	/*@Column(insertable=true)
-	private Long sId;*/
 	
 	@ManyToOne
 	@JoinColumn(name="sId",insertable = false, updatable = false)

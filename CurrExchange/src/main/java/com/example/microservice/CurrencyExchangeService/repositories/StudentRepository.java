@@ -9,6 +9,7 @@ import com.example.microservice.CurrencyExchangeService.bean.Student;
 
 public interface StudentRepository extends Repository<Student,Long>{
 	public List<Student> findBySId(Long sId);
+	public void delete(Student student);
 	public Student save(Student student);
 	@Query("select max(s.sId) from Student s")
 	public Long getMaxsId();

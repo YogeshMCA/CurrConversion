@@ -1,5 +1,6 @@
 package com.example.microservice.CurrencyExchangeService.Controller;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.microservice.CurrencyExchangeService.bean.Countries;
 import com.example.microservice.CurrencyExchangeService.bean.ExchangeValue;
+import com.example.microservice.CurrencyExchangeService.bean.School;
 import com.example.microservice.CurrencyExchangeService.bean.Student;
 import com.example.microservice.CurrencyExchangeService.repositories.CountriesRepository;
 import com.example.microservice.CurrencyExchangeService.repositories.ExchangeValueRepository;
+import com.example.microservice.CurrencyExchangeService.repositories.SchoolRepository;
 import com.example.microservice.CurrencyExchangeService.repositories.StudentRepository;
 @RestController
 public class CurrencyController {
@@ -28,6 +31,9 @@ public class CurrencyController {
 	
 	@Autowired
 	private StudentRepository studentRepository;
+	
+	@Autowired
+	private SchoolRepository schoolRepository;
 	
 	@Autowired
 	private CountriesRepository countryRepository;
@@ -71,6 +77,51 @@ public class CurrencyController {
 			return "Saved";
 		else
 			return "Not Saved";
+	}
+	
+	@PostMapping(path="/update-student-info")
+	public String updateStudentInfo(@RequestBody Student student){
+		if(student.getsId()!=null){
+			if(!studentRepository.findBySId(student.getsId()).isEmpty()){
+				studentRepository.save(student);
+				return "Updated";
+			}else{
+				return "Record not found for Update";
+			}
+		}else{
+			return "ID Missing";
+		}
+	}
+	
+	@PostMapping(path="/delete-student-info")
+	public String deleteStudentInfo(@RequestBody Student student){
+		if(student.getsId()!=null){
+			if(!studentRepository.findBySId(student.getsId()).isEmpty()){
+				studentRepository.delete(student);
+				return "Deleted";
+			}else{
+				return "Record not found for Delete";
+			}
+		}else{
+			return "ID Missing";
+		}
+	}
+	
+	@PostMapping(path="/delete-school-info")
+	public String deleteSchoolInfo(@RequestBody Student student){
+		if(student.getsId()!=null){
+			if(!studentRepository.findBySId(student.getsId()).isEmpty()){
+				List<School> school = student.getSchool();
+				Iterator<School> schoolItr = school.iterator();
+				while(schoolItr.hasNext())
+					schoolRepository.delete(schoolItr.next());
+				return "Deleted";
+			}else{
+				return "Record not found for Delete";
+			}
+		}else{
+			return "ID Missing";
+		}
 	}
 
 }

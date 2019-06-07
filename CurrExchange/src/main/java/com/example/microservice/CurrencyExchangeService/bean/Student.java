@@ -20,8 +20,8 @@ public class Student implements Serializable{
 	private Long sId;
 	private String name;
 	
-	@OneToMany(cascade=CascadeType.ALL)
-	@JoinColumn(name="sId")
+	@OneToMany(cascade=CascadeType.ALL,orphanRemoval=true) //orphanRemoval - This will remove the child records, when the parent records get removed
+	@JoinColumn(name="sId") //Avoid storing null value for foreign key column in child table.
 	private List<School> school;
 	
 	public Student(){
