@@ -15,6 +15,7 @@ import javax.persistence.TableGenerator;
 @Entity
 @TableGenerator(name="student",table="SEQ_TABLE",pkColumnName="TBL_NAME",valueColumnName="TBL_SEQ",initialValue=103,allocationSize=1)
 public class Student implements Serializable{
+	
 	@Id
 	@GeneratedValue(generator="student",strategy=GenerationType.TABLE)
 	private Long sId;
