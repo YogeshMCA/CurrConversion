@@ -12,7 +12,7 @@ import com.example.microservice.CurrencyConversionService.Bean.CurrencyConversio
 //@FeignClient(name="exchange-service",url= "${feign.client.url}")
 //@FeignClient("curr-exchange") // 1 -> Name in the eureka server - Communicate with Currency exchange service
 @FeignClient("netflix-zuul") // Name in the eureka server - Communicate with Currency exchange service via Zuul proxy
-//@RibbonClient("curr-exchange") //Added multiple service with the exchange-service name in application.properties file for load balancing
+//@RibbonClient("curr-exchange") //Added multiple instances with the exchange-service name in application.properties file for load balancing
 public interface CurrencyExchangeProxy {
 	// 1-> @GetMapping("/exchange-service/from/{from}/to/{to}")
 	@GetMapping("/curr-exchange/exchange-service/from/{from}/to/{to}")

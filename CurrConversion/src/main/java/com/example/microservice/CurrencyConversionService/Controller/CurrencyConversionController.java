@@ -2,6 +2,7 @@ package com.example.microservice.CurrencyConversionService.Controller;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +13,18 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.example.microservice.CurrencyConversionService.Bean.CurrencyConversionBean;
+import com.example.microservice.CurrencyConversionService.Bean.StudentInfo;
 import com.example.microservice.CurrencyConversionService.service.CurrencyExchangeProxy;
+import com.example.microservice.CurrencyConversionService.service.StudentInfoProxy;
 
 @RestController
 public class CurrencyConversionController {
 
 	@Autowired
 	private CurrencyExchangeProxy proxy;
+	
+	@Autowired
+	private StudentInfoProxy stdProxy;
 	
 	//RestTemplate - To communicate other services
 	@GetMapping("/currency-converter/from/{from}/to/{to}/quantity/{quantity}")
@@ -40,5 +46,14 @@ public class CurrencyConversionController {
 		
 		CurrencyConversionBean ccBean = proxy.getExchangeValue(from, to);
 		return new CurrencyConversionBean(ccBean.getId(), ccBean.getFrom(),ccBean.getTo(),quantity,ccBean.getConversionMultiple(),ccBean.getConversionMultiple().multiply(quantity),ccBean.getPort());
+	}
+	
+	
+	
+	@GetMapping("/student-info-feign/{Id}")
+	public List<StudentInfo> studentInfo(@PathVariable String Id){
+		
+		List<StudentInfo> stdInfo = stdProxy.getStudentInfo(Id);
+		return stdInfo;
 	}
 }
