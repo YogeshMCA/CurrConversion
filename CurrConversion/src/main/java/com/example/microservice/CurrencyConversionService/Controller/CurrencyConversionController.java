@@ -1,12 +1,17 @@
 package com.example.microservice.CurrencyConversionService.Controller;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.config.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Recover;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -55,5 +60,19 @@ public class CurrencyConversionController {
 		
 		List<StudentInfo> stdInfo = stdProxy.getStudentInfo(Id);
 		return stdInfo;
+	}
+	
+	@Retryable(value={Exception.class},maxAttempts=5,backoff=@Backoff(delay=1000))
+	@GetMapping("/student-info-feign-retry/{Id}")
+	public String studentInfoRetry(@PathVariable String Id){
+		System.out.println("===============Retrying=============");
+		stdProxy.getStudentInfo(Id);
+		return "Service is Up and Running";
+	}
+	
+	@Recover
+	public String fallBackMethod(Exception e){
+		System.out.println("===============Fallback Method=============");
+		return "Retry - Fallback Method";
 	}
 }

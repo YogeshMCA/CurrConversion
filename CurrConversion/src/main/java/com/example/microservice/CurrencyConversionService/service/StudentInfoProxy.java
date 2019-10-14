@@ -8,8 +8,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.example.microservice.CurrencyConversionService.Bean.StudentInfo;
 
-@FeignClient("netflix-zuul")
+//@FeignClient("netflix-zuul")
+@FeignClient("CURR-EXCHANGE")
 public interface StudentInfoProxy {
-	@GetMapping("/curr-exchange/student-info/{id}")
+	/*Enable it  for Zuul
+	 * 
+	 * @GetMapping("/curr-exchange/student-info/{id}")
+	public List<StudentInfo> getStudentInfo(@PathVariable("id") String id);*/
+	
+	@GetMapping("/student-info/{id}")
 	public List<StudentInfo> getStudentInfo(@PathVariable("id") String id);
 }
