@@ -1,17 +1,14 @@
 package com.example.microservice.CurrencyConversionService.Controller;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.config.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Recover;
-import org.springframework.retry.annotation.Retryable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +18,7 @@ import com.example.microservice.CurrencyConversionService.Bean.CurrencyConversio
 import com.example.microservice.CurrencyConversionService.Bean.StudentInfo;
 import com.example.microservice.CurrencyConversionService.service.CurrencyExchangeProxy;
 import com.example.microservice.CurrencyConversionService.service.StudentInfoProxy;
+import com.example.microservice.CurrencyConversionService.service.StudentService;
 
 @RestController
 public class CurrencyConversionController {
@@ -30,6 +28,9 @@ public class CurrencyConversionController {
 	
 	@Autowired
 	private StudentInfoProxy stdProxy;
+	
+	@Autowired
+	private StudentService studentService;
 	
 	//RestTemplate - To communicate other services
 	@GetMapping("/currency-converter/from/{from}/to/{to}/quantity/{quantity}")
@@ -62,17 +63,10 @@ public class CurrencyConversionController {
 		return stdInfo;
 	}
 	
-	@Retryable(value={Exception.class},maxAttempts=5,backoff=@Backoff(delay=1000))
 	@GetMapping("/student-info-feign-retry/{Id}")
-	public String studentInfoRetry(@PathVariable String Id){
-		System.out.println("===============Retrying=============");
-		stdProxy.getStudentInfo(Id);
-		return "Service is Up and Running";
+	public String studentInfoRetry(@PathVariable String Id) {
+		System.out.println("====="+stdProxy.hashCode());
+		return studentService.getInfo(Id);
 	}
 	
-	@Recover
-	public String fallBackMethod(Exception e){
-		System.out.println("===============Fallback Method=============");
-		return "Retry - Fallback Method";
-	}
 }
